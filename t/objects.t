@@ -27,7 +27,10 @@ my @tests = (
 while (defined (my $input = shift @tests)) {
     my ($expect, $object, $error) = shift @tests;
     decode_aref 
-        { 'x:subject' => { '<x:predicate>' => $input } },
+        { _ns => {
+                geo => 'http://www.w3.org/2003/01/geo/wgs84_pos#Point'
+            },
+        'x:subject' => { '<x:predicate>' => $input } },
         callback => sub { shift; shift; $object = \@_; };
     is_deeply $object, $expect, "\"$input\"";
 }
